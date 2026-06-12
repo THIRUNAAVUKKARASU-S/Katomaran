@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
+const path = require('path');
 const { rateLimit } = require('express-rate-limit');
 const apiRoutes = require('./routes/api');
 const { redirectURL } = require('./controllers/redirectController');
@@ -53,14 +54,28 @@ app.use('/api', apiLimiter);
 // API Routes
 app.use('/api', apiRoutes);
 
-// Public Redirect Route (needs to be server-side redirect)
-// Use a separate rate limiter for redirects if desired, or skip it so users can access shortened links quickly
-app.get('/:shortCode', redirectURL);
-
-// Server status endpoint
-app.get('/', (req, res) => {
-  res.json({ status: 'LinkLite Server is running smoothly.' });
+// Exclude frontend routes from redirect lookup to let React Router handle them
+app.get('/:shortCode', (req, res, next) => {
+  const frontendRoutes = ['dashboard', 'login', 'signup', 'workspaces', 'apikeys', 'expired', 'not-found', 'stats', 'p'];
+  if (frontendRoutes.includes(req.params.shortCode.toLowerCase())) {
+    return next();
+  }
+  redirectURL(req, res, next);
 });
+
+// Serve static assets in production
+if (process.env.NODE_ENV === 'production') {
+  const clientDistPath = path.join(__dirname, '../client/dist');
+  app.use(express.static(clientDistPath));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(clientDistPath, 'index.html'));
+  });
+} else {
+  // Server status endpoint (for local development status checks)
+  app.get('/', (req, res) => {
+    res.json({ status: 'LinkLite Server is running smoothly.' });
+  });
+}
 
 // Database Connection
 const dbUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/linklite';

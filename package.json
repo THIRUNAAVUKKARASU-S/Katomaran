@@ -1,0 +1,12 @@
+{
+  "name": "linklite-monorepo",
+  "version": "1.0.0",
+  "description": "Unified monorepo build for LinkLite SaaS URL Shortener",
+  "scripts": {
+    "install-client": "npm install --prefix client --legacy-peer-deps",
+    "install-server": "npm install --prefix server --legacy-peer-deps",
+    "build-client": "npm run build --prefix client",
+    "build": "npm run install-client && npm run build-client && npm run install-server",
+    "start": "node server/server.js"
+  }
+}
