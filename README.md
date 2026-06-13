@@ -243,6 +243,19 @@ To deploy the application for production:
 4. Define your backend routing:
    Since Vite proxy is for local development, for production requests, configure the API target base. In Vercel, you can use a custom configuration file `vercel.json` to route `/api` to your backend URL:
    ```json
+Screenshots
+<img width="1907" height="941" alt="Screenshot 2026-06-14 011749" src="https://github.com/user-attachments/assets/9f8d432f-a570-4d51-8331-c506a61a8ef9" />
+
+<img width="1903" height="935" alt="Screenshot 2026-06-14 011816" src="https://github.com/user-attachments/assets/e40ba817-d71c-4630-bcd9-34f088b592bf" />
+
+<img width="1904" height="937" alt="Screenshot 2026-06-14 011837" src="https://github.com/user-attachments/assets/362b3dfe-c59e-4bbd-9696-72292cf42090" />
+
+<img width="1908" height="929" alt="Screenshot 2026-06-14 011851" src="https://github.com/user-attachments/assets/5ec74971-4043-42f6-a33b-d17c57dd99de" />
+
+<img width="1800" height="779" alt="Screenshot 2026-06-14 011924" src="https://github.com/user-attachments/assets/b1324248-4f84-4990-91d2-d11cd597ef0a" />
+
+
+
    {
      "rewrites": [
        { "source": "/api/(.*)", "destination": "https://linklite-api.onrender.com/api/$1" }
